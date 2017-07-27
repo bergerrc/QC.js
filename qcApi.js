@@ -79,7 +79,7 @@ qcApi.prototype.login = function(connInfo){
 
 		this.client.get(this.rootUrl + "/authentication-point/authenticate", function handleAuthResponse(data, res){
 
-			if(res.statusCode == 200)
+			if(res.statusCode == 200 || res.statusCode == 201)
 			{
 				this.isAuthenticated = true;
 				this.authCookie = res.headers['set-cookie'].join(';');
