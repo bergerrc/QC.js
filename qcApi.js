@@ -167,6 +167,9 @@ qcApi.prototype.buildUrl = function(url, options){
 		if(options.pageSize)
 			queryString.push('page-size=' + options.pageSize);
 
+		if (options.query) 
+			queryString.push("query=" + options.query);
+		
 		if(options.fields && options.fields.length != undefined)
 			queryString.push('fields=' + options.fields.join(','));
 
