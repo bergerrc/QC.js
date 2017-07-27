@@ -170,6 +170,9 @@ qcApi.prototype.buildUrl = function(url, options){
 		if (options.query) 
 			queryString.push("query=" + options.query);
 		
+		if(options.startIndex)
+			queryString.push('start-index=' + options.startIndex);
+		
 		if(options.fields && options.fields.length != undefined)
 			queryString.push('fields=' + options.fields.join(','));
 
