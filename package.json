@@ -1,6 +1,6 @@
 {
-  "name": "QC.js",
-  "version": "0.0.1",
+  "name": "qc",
+  "version": "0.0.2",
   "description": "Wrapper for the HP ALM/Quality Center REST API",
   "main": "qcapi.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ddikman/QC.js.git"
+    "url": "https://github.com/bergerrc/QC.js.git"
   },
   "keywords": [
     "alm",
@@ -18,12 +18,12 @@
     "rest",
     "api"
   ],
-  "author": "David Dikman",
+  "author": "Ricardo Custodio",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ddikman/QC.js/issues"
+    "url": "https://github.com/bergerrc/QC.js/issues"
   },
-  "homepage": "https://github.com/ddikman/QC.js",
+  "homepage": "https://github.com/bergerrc/QC.js",
   "devDependencies": {
     "chai": "^3.3.0",
     "mocha": "^2.3.3",
