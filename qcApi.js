@@ -2,6 +2,8 @@ var Promise = require('promise');
 var cookies = require('cookie');
 var util = require('util');
 var xml2js = require('xml2js');
+require('String.prototype.repeat');
+require('buffer-concat/polyfill');
 var Client = new require('node-rest-client').Client;
 
 InvalidAuthenticationException = function(msg){
@@ -311,11 +313,23 @@ qcApi.prototype.attach = function(obj, options) {
 		};
 
 		this.verifyAuthenticated();
-
-		url = this.buildUrl("/"+(obj.Type?obj.Type:obj.type)+"s/"+obj.id+"/attachments", options);
 		
-		if (options.data)
+		if (options.data){
+			//console.log( "File length orig:" +  options.data.length);
+			if ( options.data.length <= 7486 )
+				if ( options.data instanceof String )
+					options.data += " ".repeat(7487 - options.data.length );
+				else if ( Buffer.isBuffer(options.data) ){
+					//console.log( "Buffer bytes length:" + options.data.byteLength );
+					var b = new Buffer(" ".repeat(7487 - options.data.length));
+					//console.log( "New Buffer bytes length:" + b.byteLength );
+					options.data = Buffer.concat([options.data,b]);
+				}
 			h["data"] = options.data;
+			h.headers["Content-Length"] = options.data.length;
+			//console.log( "File length:" +  options.data.length);
+			//console.log( "Content-Length:" +  h.headers["Content-Length"]);
+		}
 		else
 			throw 'Expected object data in args parameter ';
 		
@@ -324,14 +338,25 @@ qcApi.prototype.attach = function(obj, options) {
 		else
 			throw 'Expected filename in args parameter ';
 		
+		url = this.buildUrl("/"+(obj.Type?obj.Type:obj.type)+"s/"+obj.id+"/attachments", options);
 		this.client.post(url, h, function handleGetResponse(data, res){
+			//console.log("status:"+res.statusCode+(data.QCRestException? "/" + data.QCRestException.Title[0]:""));
+			if( res.statusCode != 201 
+			  && data.QCRestException.Title[0].indexOf("Failed to set content to attachment") == 0 ){ //Workaround of Api error
+				return this.get("/"+(obj.Type?obj.Type:obj.type)+"s/"+obj.id+"/attachments?order-by={id}").then( function(attachs){
+					resolve( ( attachs instanceof Array? attachs[attachs.length-1]: attachs ) );
+				});				
+			}else{
+				if ( res.statusCode != 201 )
+					reject(new FailedRequestException("Failed to process url", res.statusCode, data.toString('utf8'), url));
+				else
+					resolve(this.convertResult(data));
+			}
 
-			if( res.statusCode != 201 )
-				reject(new FailedRequestException("Failed to process url", res.statusCode, data.toString('utf8'), url));
-			else
-				resolve(this.convertResult(data));
-
-		}.bind(this));
+		}.bind(this),function(err){
+			console.log(err);
+			reject(new FailedRequestException("Failed to process url", res.statusCode, data.toString('utf8'), url));
+		});
 
 	}.bind(this));
 
