@@ -4,7 +4,7 @@
   "description": "Wrapper for the HP ALM/Quality Center REST API",
   "main": "qcapi.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,10 @@
   "dependencies": {
     "cookie": "^0.2.2",
     "node-rest-client": "^1.5.1",
-    "promise": "^7.0.4"
+    "promise": "^7.3.1",
+    "string.prototype.repeat":"^0.2.0",
+    "buffer-concat/polyfill": "^1.0.0",
+    "xml2js":"^0.4.19",
+    "util":"^0.10.3"
   }
 }
