@@ -30,12 +30,12 @@
     "mocha-logger": "^1.0.1"
   },
   "dependencies": {
-    "cookie": "^0.2.2",
+    "cookie": "^0.2.4",
     "node-rest-client": "^1.5.1",
     "promise": "^7.3.1",
-    "string.prototype.repeat":"^0.2.0",
-    "buffer-concat/polyfill": "^1.0.0",
-    "xml2js":"^0.4.19",
-    "util":"^0.10.3"
+    "string.prototype.repeat": "^0.2.0",
+    "buffer-concat": "^1.0.0",
+    "xml2js": "^0.4.19",
+    "util": "^0.10.3"
   }
 }
